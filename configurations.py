@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Feb  3 18:54:42 2020
-@author: Zahra Alimadadi & Zeynab Sabahi
+@author: zahra
 """
 import os
 import enum
@@ -11,6 +11,8 @@ class Processing(enum.Enum):
     kfold = "KFold"
     validation = "Validation"
     fasttest = "FastTest"
+    fasttestkfold ="Fasttestkfold"
+    
     
 
 #header = ['Protocol', 'Srcip','SrcPort', 'Dstip', 'DstPort', 'Duration',
@@ -22,10 +24,11 @@ class Processing(enum.Enum):
 # 2- simplejson: pip3 install simplejson
 
 ## framework hyperparameters:
-
-sessionthreshold = [100001]#5000, 15]
-flowthreshold = [4.6]#0.2[0.1,0.2,0.3,0.4,0.5,0.6]#[0.5]#[0.1,0.3,0.5]#, 10, 15]
-flowduration = [5.5]#0.2[0.1,0.2,0.3,0.4,0.5]#[0.1,0.3,0.5]#,8]#, 10, 15]
+ #S10000_F0.2_D0.4_sp5_k4 for 6
+ 
+sessionthreshold = [5000]#[100001]#100000]#5000, 15]
+flowthreshold = [0.2]#[4.6]#[0.2]#6]#0.2[0.1,0.2,0.3,0.4,0.5,0.6]#[0.5]#[0.1,0.3,0.5]#, 10, 15]
+flowduration = [0.2]#[5.5]#[0.4]#6]#0.2[0.1,0.2,0.3,0.4,0.5]#[0.1,0.3,0.5]#,8]#, 10, 15]
 featureset = [1]#, 2]#, 2] # include keys of statsname selected to be used as statistical features
 k_windows = [3]#[3,4]#, 4, 5]#, 6, 7, 8]
 
@@ -77,7 +80,7 @@ partitionbasedon = 'Application'# 'Task'# for the Mobile dataset set it to Appli
 settingsname =  'Simple_WiseHalfSplit' #  'Union_WiseHalfSplit' #
 
 ## evaluation method: kfold or validaion set or fasttest
-processing = Processing.fasttest.name
+processing = Processing.fasttestkfold.name#Processing.kfold.name#Processing.fasttest.name
 
 ## percentage for train set in the case of fasttest, rest is used for test
 trainPercentage = 1 # 0.999999 #1 #0.8
@@ -90,7 +93,7 @@ threshold = 1 #2 #3
 #testdatathreshold = 5
 
 ## number of fold in case of Kfold
-numberoffold = 10
+numberoffold = 5
 
 #The following three configs are used in ktsslib
 ## trace cutting length coeficient for decision making during test 
@@ -131,7 +134,7 @@ removefiles = False
 cwd = os.getcwd()
 
 ## Parent folder of Pcap/PSML folder, located in cwd+/../DataSets/, and only contains Pcap/PSML folder at the begining 
-DSName = "4-UT"#"Tor"#7-UT_Class"#"UNB2_class"#"4-UT"#"UNB2_class_t"#"7-UT_Class"#"4-UT"#""UNB3"#""""7-UT_Class"#            "UNB2_class"#"5-UNB"#"UNB3"#"3-cross-android-ios"#"UNB3"#"4-UT"#"5-UNB"#"1-android-all-Copy"#"4-UT-copy"#"0-recon50-clusters"#"4-UT"#"0-recon99-50" #"2-ios-all"#"6-UNB_Class"#"5-UNB"#"0-recon99-50"#"3-cross-android-ios"#"1-android-all"#"2-ios-all"#"UNB3"#"Marzani2"#"UNB2"#"6-UNBClass"#"6-UNBClass"#"recon99"#"3-cross-android-ios"#"2-ios-all"#"1-android-all"#"0-recon99-50"#"6-UNB_Class"# "7-UT_Class"#"5-UNB" #"4-UT"#"3-cross-android-ios"#"1-android-all-100"#"2-ios-all" #"recon99-50"#"ios-all" #"recon99" #"recon99-30" "android-all-100" "android-all" "india-android-all" "us-android-all" "unb-1gig" "UT" "recon99-30" "UNB_Final" 
+DSName = "4-UT"#"7-UT_Class"#UNB3 "#"7-UT_Class"#"androidF"#7-UT_Class"#"UNB2_class"#"4-UT"#"UNB2_class_t"#"7-UT_Class"#"4-UT"#""UNB3"#""""7-UT_Class"#            "UNB2_class"#"5-UNB"#"UNB3"#"3-cross-android-ios"#"UNB3"#"4-UT"#"5-UNB"#"1-android-all-Copy"#"4-UT-copy"#"0-recon50-clusters"#"4-UT"#"0-recon99-50" #"2-ios-all"#"6-UNB_Class"#"5-UNB"#"0-recon99-50"#"3-cross-android-ios"#"1-android-all"#"2-ios-all"#"UNB3"#"Marzani2"#"UNB2"#"6-UNBClass"#"6-UNBClass"#"recon99"#"3-cross-android-ios"#"2-ios-all"#"1-android-all"#"0-recon99-50"#"6-UNB_Class"# "7-UT_Class"#"5-UNB" #"4-UT"#"3-cross-android-ios"#"1-android-all-100"#"2-ios-all" #"recon99-50"#"ios-all" #"recon99" #"recon99-30" "android-all-100" "android-all" "india-android-all" "us-android-all" "unb-1gig" "UT" "recon99-30" "UNB_Final" 
 
 basedir = cwd+"/../DataSets/%s"%DSName
 
@@ -155,7 +158,7 @@ for d in dirs:
     os.makedirs (d,exist_ok=True)
     
 
-justRunTraces = False    
+justRunTraces = True    
 
 
 #***** configuration added for Deep Learning method used in ktssLib_Union_DL.py
@@ -168,8 +171,8 @@ splitTest = True
 testPercentage = 0.2 #0.4
 
 # trace cutting length coeficient for decision making during test 
-# cuttingLengthCoe = [3]
-sp = [7]#[3,4]
+cuttingLengthCoe = [3]
+sp = [3]#[5]#[3,4]
 #These configs check the min acceptable length of the train and test traces
 
 trainLenCoeThreshold = 3
